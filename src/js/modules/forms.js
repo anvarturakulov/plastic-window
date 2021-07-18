@@ -45,7 +45,7 @@ const forms = (state,postPopupSelector) => {
 
             postData('assets/server.php', formData)
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     statusMessage.textContent = message.sucsecc;
                 })
                 .catch(()=> statusMessage.textContent = message.failure)
@@ -53,9 +53,11 @@ const forms = (state,postPopupSelector) => {
                     clearInputs();
                     setTimeout(()=> {
                         statusMessage.remove();
+                        document.querySelector(postPopupSelector).style.display = 'none';
+                        document.body.style.overflow = '';
                     },5000);
                     
-                    document.querySelector(postPopupSelector).style.display = 'none';
+                    
                     
                 });
         });

@@ -1,8 +1,8 @@
 import changeModalState from './changeModalState';
 
-const modals = (state) => {
+const modals = (state={}) => {
     function closeModal(modal) {
-        let windows = document.querySelectorAll('[data-modal');
+        let windows = document.querySelectorAll('[data-modal]');
         modal.style.display = 'none';
         document.body.style.overflow = '';
         windows.forEach(item => {
@@ -24,7 +24,7 @@ const modals = (state) => {
         const trigger = document.querySelectorAll(triggerSelector),
               modal   = document.querySelector(modalSelector),
               close   = document.querySelector(closeSelector),
-              windows = document.querySelectorAll('[data-modal');
+              windows = document.querySelectorAll('[data-modal]');
 
         function checkState() {
             if (modal.getAttribute('data-popup') == '2') {
@@ -48,8 +48,6 @@ const modals = (state) => {
                     e.preventDefault();
                 }
             
-                console.log(state);
-
                 if (checkState()) {
                     windows.forEach(item => {
                         item.style.display = 'none';

@@ -17808,6 +17808,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
 /* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_images__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/images */ "./src/js/modules/images.js");
+
 
 
 
@@ -17826,6 +17828,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState, '.popup_calc_end');
   Object(_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])('.container1', deadline);
+  Object(_modules_images__WEBPACK_IMPORTED_MODULE_6__["default"])('[data-picture]');
 });
 
 /***/ }),
@@ -18015,7 +18018,7 @@ var forms = function forms(state, postPopupSelector) {
       }
 
       postData('assets/server.php', formData).then(function (res) {
-        console.log(res);
+        // console.log(res);
         statusMessage.textContent = message.sucsecc;
       }).catch(function () {
         return statusMessage.textContent = message.failure;
@@ -18023,14 +18026,58 @@ var forms = function forms(state, postPopupSelector) {
         clearInputs();
         setTimeout(function () {
           statusMessage.remove();
+          document.querySelector(postPopupSelector).style.display = 'none';
+          document.body.style.overflow = '';
         }, 5000);
-        document.querySelector(postPopupSelector).style.display = 'none';
       });
     });
   });
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (forms);
+
+/***/ }),
+
+/***/ "./src/js/modules/images.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/images.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var images = function images(selector) {
+  var popup = document.createElement('div'),
+      picture = document.createElement('img'),
+      rowLinks = document.querySelector(selector),
+      imageLinks = rowLinks.querySelectorAll('div > a'); //.querySelectorAll('> div > a')
+
+  document.body.append(popup);
+  popup.append(picture);
+  console.log(imageLinks);
+  popup.classList.add('popup');
+  popup.classList.add('popup-content');
+  picture.classList.add('image-content');
+  popup.addEventListener('click', function () {
+    popup.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+  imageLinks.forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      e.preventDefault();
+      picture.src = item.href;
+      popup.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (images);
 
 /***/ }),
 
@@ -18049,9 +18096,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var modals = function modals(state) {
+var modals = function modals() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
   function closeModal(modal) {
-    var windows = document.querySelectorAll('[data-modal');
+    var windows = document.querySelectorAll('[data-modal]');
     modal.style.display = 'none';
     document.body.style.overflow = '';
     windows.forEach(function (item) {
@@ -18073,7 +18122,7 @@ var modals = function modals(state) {
     var trigger = document.querySelectorAll(triggerSelector),
         modal = document.querySelector(modalSelector),
         close = document.querySelector(closeSelector),
-        windows = document.querySelectorAll('[data-modal');
+        windows = document.querySelectorAll('[data-modal]');
 
     function checkState() {
       if (modal.getAttribute('data-popup') == '2') {
@@ -18096,8 +18145,6 @@ var modals = function modals(state) {
         if (e.target) {
           e.preventDefault();
         }
-
-        console.log(state);
 
         if (checkState()) {
           windows.forEach(function (item) {
@@ -18154,79 +18201,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// const tabs = () => {
-//     function bindTabs(selectorTabs, selectorTabContents, selectorLink, activeClass, tabList) {
-//         const tabs     = document.querySelectorAll(selectorTabs);
-//         function removeAllActiveClasses(selectorLink) {
-//             const links = document.querySelectorAll(`${selectorTabs} ${selectorLink}`);
-//             links.forEach(element => {
-//                 element.classList.remove(activeClass);
-//             });
-//         }
-//         function hideAllTabContents(selectorTabContents) {
-//             const links = document.querySelectorAll(selectorTabContents);
-//             links.forEach(element => {
-//                 element.style.display = 'none';
-//             });
-//         }
-//         function addActiveClass(element) {
-//             element.classList.add(activeClass);
-//         }
-//         tabs.forEach(item => {
-//             item.addEventListener('click', (e)=> {
-//                 removeAllActiveClasses(selectorLink);
-//                 const activeTabContentSelector = tabList[item.querySelector(selectorLink).classList[0]];
-//                 item.querySelector(selectorLink).classList.add(activeClass);
-//                 hideAllTabContents(selectorTabContents);
-//                 console.log(activeTabContentSelector);
-//                 const it = document.querySelector(`.${activeTabContentSelector}`);
-//                 it.style.display = 'block';
-//             });
-//         });
-//     }
-//     function tabPopupCalc() {
-//         const links = document.querySelectorAll('.balcon_icons_img'),
-//               bigImgList = document.querySelectorAll('.big_img > img');
-//               console.log(bigImgList);
-//         function showBigImg(alt) {
-//             bigImgList.forEach(item =>{ 
-//                 if (item.alt == alt) {
-//                     item.style.display = 'block';
-//                 } else {
-//                     item.style.display = 'none';
-//                 }
-//             });
-//         }
-//         function clearActiveClassFromLinks(){
-//             links.forEach(item => {
-//                 item.classList.remove('do_image_more');
-//             });
-//         }
-//         links.forEach( link => {
-//             link.addEventListener('click', () => {
-//                 clearActiveClassFromLinks();
-//                 link.classList.add('do_image_more');
-//                 showBigImg(link.querySelector('img').alt);
-//             });
-//         });
-//     }
-//     const tabList = {
-//         'tree_link' : 'tree', 
-//         'aluminum_link' : 'aluminum',
-//         'plastic_link' : 'plastic',
-//         'french_link' : 'french',
-//         'rise_link' : 'rise'
-//     };
-//     const decorList = {
-//         'internal_link' : 'internal', 
-//         'external_link' : 'external',
-//         'rising_link' : 'rising',
-//         'roof_link' : 'roof',
-//     };
-//     bindTabs('.glazing_block', '.glazing_content', 'a', 'active',tabList);
-//     bindTabs('.decoration_item', '.decoration_content .row .decor_item', 'div', 'after_click',decorList);
-//     tabPopupCalc();
-// };
 var tabs = function tabs(headerSelector, tabSelector, contentSelector, activeClass) {
   var display = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'block';
   var header = document.querySelector(headerSelector),
