@@ -1,18 +1,23 @@
 import changeModalState from './changeModalState';
 
 const modals = (state={}) => {
+    
+    
     function closeModal(modal) {
         let windows = document.querySelectorAll('[data-modal]');
         modal.style.display = 'none';
         document.body.style.overflow = '';
+        document.body.style.marginRight = '0px';
         windows.forEach(item => {
             item.style.display = 'none';
         });
     }
 
     function showModal(modal) {
+        let scroll  = calcScroll();    
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
+        document.body.style.marginRight = `${scroll}px`;
     }
 
 
@@ -25,6 +30,7 @@ const modals = (state={}) => {
               modal   = document.querySelector(modalSelector),
               close   = document.querySelector(closeSelector),
               windows = document.querySelectorAll('[data-modal]');
+              
 
         function checkState() {
             if (modal.getAttribute('data-popup') == '2') {
@@ -74,6 +80,20 @@ const modals = (state={}) => {
     function showModalByTime(selector, time) {
         const popup = document.querySelector(selector);
         setTimeout(() => showModal(popup), time);
+    }
+
+    function calcScroll() {
+        let div = document.createElement('div');
+        div.style.width = '50px';
+        div.style.height = '50px';
+        div.style.overflowY = 'scroll';
+        div.style.visibility = 'hidden';
+
+        document.body.appendChild(div);
+        let scrollWidth = div.offsetWidth - div.clientWidth;
+        div.remove();
+
+        return scrollWidth;
     }
 
     bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
